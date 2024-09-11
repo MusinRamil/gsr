@@ -53,6 +53,9 @@ importers:
       pug:
         specifier: ^3.0.3
         version: 3.0.3
+      ufo:
+        specifier: ^1.5.4
+        version: 1.5.4
       unstorage:
         specifier: ^1.12.0
         version: 1.12.0(ioredis@5.4.1)
