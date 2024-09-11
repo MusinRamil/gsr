@@ -1,0 +1,15 @@
+{
+	"recommendations": [
+		"editorconfig.editorconfig",
+		"dbaeumer.vscode-eslint",
+		"ms-playwright.playwright",
+		"esbenp.prettier-vscode",
+		"Vue.volar",
+		"eamodio.gitlens",
+		"amandeepmittal.pug",
+		"wayou.vscode-todo-highlight",
+		"sdras.vue-vscode-snippets",
+		"streetsidesoftware.code-spell-checker",
+		"MylesMurphy.prettify-ts"
+	]
+}
