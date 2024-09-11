@@ -1,51 +1,19 @@
-import { joinURL, withQuery } from 'ufo';
-
 export default defineNuxtPlugin({
 	setup() {
 		const { isServer } = useProcess();
-		const {
-			api: { baseURL: serverApiBaseURL },
-			public: {
-				api: { baseURL: clientApiBaseURL },
-			},
-		} = useRuntimeConfig();
-		const nuxtApp = useNuxtApp();
+		const options = useRuntimeConfig();
 
 		const api = $fetch.create({
-			baseURL: isServer ? serverApiBaseURL : clientApiBaseURL,
+			baseURL: isServer ? options.api.baseURL : options.public.api.baseURL,
 			retry: false,
 
 			async onRequest(ctx) {
-				console.log('onRequest', ctx);
-
-				const { request, options } = ctx;
+				const { options } = ctx;
 
 				options.headers = {
+					'Content-Type': 'application/json',
 					...options.headers,
 				};
-
-				if (isServer) {
-					let path = withQuery(joinURL(options.baseURL ?? '', request as string), {
-						...(options.query && options.query),
-					});
-
-					if (options.method === 'POST' && options.body) {
-						console.log('POST', options.body);
-					}
-				}
-			},
-
-			async onResponse(ctx) {
-				console.log('onResponse', ctx);
-
-				if (isServer) {
-					const { request, options } = ctx;
-					let path = request as string;
-
-					if (options.method === 'POST' && options.body) {
-						console.log('POST', options.body);
-					}
-				}
 			},
 		});
 

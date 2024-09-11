@@ -1,13 +1,36 @@
-const { $api } = useNuxtApp();
-
 export const listingService = {
-	fetchListing: async (): Promise<unknown> => {
-		console.log('getListing');
+	fetch: async (): Promise<unknown> => {
+		const { $api } = useNuxtApp();
 
-		const response = await $api<unknown>(`Vacancies/All/List`, {
+		const endpoint = 'Vacancies/All/List';
+		const cacheKey = endpoint.split('/').join(':');
+
+		/**
+		 * Check if data is in the cache
+		 */
+		const cachedResponse = await $fetch(`/api/cache/get?key=${cacheKey}`);
+		if (cachedResponse) {
+			return cachedResponse;
+		}
+
+		/**
+		 * Fetch data from the API
+		 */
+		const response = await $api<unknown>(endpoint, {
 			method: 'GET',
 		});
-		console.log(response);
+
+		/**
+		 * Save data to the cache
+		 */
+		await $fetch(`/api/cache/set`, {
+			method: 'POST',
+			body: {
+				key: cacheKey,
+				data: response,
+				time: cacheTime.day,
+			},
+		});
 
 		return response;
 	},

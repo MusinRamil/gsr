@@ -1,12 +1,7 @@
 import { defineMultiCacheOptions } from 'nuxt-multi-cache/dist/runtime/serverOptions';
 import redisDriver from 'unstorage/drivers/redis';
 import { type H3Event, getHeader, getRequestURL } from 'h3';
-
-const redisOptions = {
-	host: process.env.NUXT_REDIS_HOST || '127.0.0.1',
-	port: parseInt(process.env.NUXT_REDIS_PORT || '', 10) || 6379,
-	db: parseInt(process.env.NUXT_REDIS_DB || '', 10) || 0,
-};
+import { redisOptions } from '~/utils/cache-storage';
 
 export default defineMultiCacheOptions({
 	data: {
