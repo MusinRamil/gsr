@@ -93,3 +93,61 @@ export const percentOf = (val: number, of: number) => {
  */
 export const inRange = (x: number, min: number, max: number) =>
 	x >= Math.min(min, max) && x < Math.max(min, max);
+
+/**
+ * Функция проверяет, является ли строка числом.
+ * @param {string} candidate Строка для проверки.
+ * @returns {boolean} Возвращает true, если строка является числом.
+ *
+ * @example
+ * const result = numberCandidate('123'); // true
+ * const result2 = numberCandidate('123.456'); // true
+ * const result3 = numberCandidate('123.456.789'); // false
+ */
+export const numberCandidate = (candidate: string) => /^[+-]?\d+(\.\d+)?$/.test(candidate);
+
+/**
+ * Преобразует строку в число, если это возможно.
+ * @param {string} str  Строка для преобразования.
+ * @returns {string | number} Преобразованное значение или исходная строка.
+ *
+ * @example
+ * const result = tryParseFloat('123'); // 123
+ * const result2 = tryParseFloat('123.456'); // 123.456
+ * const result3 = tryParseFloat('123.456.789'); // '123.456.789'
+ */
+export const tryParseFloat = (str: string) => (numberCandidate(str) ? parseFloat(str) : str);
+
+/**
+ * Декодирует строку в число, boolean или одно из ключевых слов (true, false, null, undefined).
+ * @param {string} str Строка для декодирования.
+ * @returns {string | number | boolean | null | undefined} Декодированное значение.
+ *
+ * @example
+ * const result = queryStringDecoder('123'); // 123
+ * const result2 = queryStringDecoder('123.456'); // 123.456
+ * const result3 = queryStringDecoder('true'); // true
+ * const result4 = queryStringDecoder('false'); // false
+ * const result5 = queryStringDecoder('null'); // null
+ * const result6 = queryStringDecoder('undefined'); // undefined
+ */
+export const queryStringDecoder = (str: string): string | number | boolean | null | undefined => {
+	const candidateToNumber = tryParseFloat(str);
+
+	if (typeof candidateToNumber == 'number' && !isNaN(candidateToNumber)) {
+		return candidateToNumber;
+	}
+
+	const keywords: Record<string, any> = {
+		true: true,
+		false: false,
+		null: null,
+		undefined: undefined,
+	};
+
+	if (str in keywords) {
+		return keywords[str];
+	}
+
+	return str;
+};

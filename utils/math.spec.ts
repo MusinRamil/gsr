@@ -58,4 +58,88 @@ describe('math', () => {
 	])('inRange(val=%s, min=%s, max=%s) = %s', (val, min, max, expectation) => {
 		expect(inRange(val, min, max)).toEqual(expectation);
 	});
+
+	// Тесты для numberCandidate
+	describe('numberCandidate', () => {
+		it('должен возвращать true для целых чисел', () => {
+			expect(numberCandidate('123')).toBe(true);
+		});
+
+		it('должен возвращать true для чисел с плавающей запятой', () => {
+			expect(numberCandidate('123.456')).toBe(true);
+		});
+
+		it('должен возвращать false для строк, не являющихся числами', () => {
+			expect(numberCandidate('123.456.789')).toBe(false);
+			expect(numberCandidate('abc')).toBe(false);
+			expect(numberCandidate('')).toBe(false);
+		});
+
+		it('должен корректно работать с отрицательными числами', () => {
+			expect(numberCandidate('-123')).toBe(true);
+			expect(numberCandidate('-123.456')).toBe(true);
+		});
+
+		it('должен корректно обрабатывать строку с плюсом', () => {
+			expect(numberCandidate('+123')).toBe(true);
+			expect(numberCandidate('+123.456')).toBe(true);
+		});
+	});
+
+	// Тесты для tryParseFloat
+	describe('tryParseFloat', () => {
+		it('должен преобразовать строку целого числа в число', () => {
+			expect(tryParseFloat('123')).toBe(123);
+		});
+
+		it('должен преобразовать строку числа с плавающей запятой в число', () => {
+			expect(tryParseFloat('123.456')).toBe(123.456);
+		});
+
+		it('должен возвращать исходную строку, если она не является числом', () => {
+			expect(tryParseFloat('123.456.789')).toBe('123.456.789');
+			expect(tryParseFloat('abc')).toBe('abc');
+		});
+
+		it('должен корректно обрабатывать отрицательные числа', () => {
+			expect(tryParseFloat('-123')).toBe(-123);
+			expect(tryParseFloat('-123.456')).toBe(-123.456);
+		});
+
+		it('должен корректно обрабатывать строку с плюсом', () => {
+			expect(tryParseFloat('+123')).toBe(123);
+			expect(tryParseFloat('+123.456')).toBe(123.456);
+		});
+	});
+
+	// Тесты для queryStringDecoder
+	describe('queryStringDecoder', () => {
+		it('должен корректно декодировать числа', () => {
+			expect(queryStringDecoder('123')).toBe(123);
+			expect(queryStringDecoder('123.456')).toBe(123.456);
+		});
+
+		it('должен возвращать boolean для значений true/false', () => {
+			expect(queryStringDecoder('true')).toBe(true);
+			expect(queryStringDecoder('false')).toBe(false);
+		});
+
+		it('должен возвращать null для строки "null"', () => {
+			expect(queryStringDecoder('null')).toBe(null);
+		});
+
+		it('должен возвращать undefined для строки "undefined"', () => {
+			expect(queryStringDecoder('undefined')).toBe(undefined);
+		});
+
+		it('должен возвращать исходную строку, если она не является числом или ключевым словом', () => {
+			expect(queryStringDecoder('abc')).toBe('abc');
+			expect(queryStringDecoder('123.456.789')).toBe('123.456.789');
+		});
+
+		it('должен корректно работать с отрицательными числами', () => {
+			expect(queryStringDecoder('-123')).toBe(-123);
+			expect(queryStringDecoder('-123.456')).toBe(-123.456);
+		});
+	});
 });
