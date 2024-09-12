@@ -55,7 +55,7 @@ export default defineNuxtConfig({
 		timing: false,
 	},
 
-	modules: ['nuxt-multi-cache'],
+	modules: ['nuxt-multi-cache', '@nuxt/test-utils/module'],
 
 	runtimeConfig: {
 		api: {

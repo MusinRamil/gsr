@@ -1,10 +1,10 @@
 <template lang="pug">
 h1 Hello world
-pre {{ listingState }}
+pre {{ vacanciesState }}
 </template>
 
 <script lang="ts" setup>
-const { listingState, fetchListing } = useListing();
+const { vacanciesState, fetchVacancies } = useVacancies();
 
-await fetchListing();
+await fetchVacancies();
 </script>
