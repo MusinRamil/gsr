@@ -10,7 +10,14 @@ export default defineNuxtConfig({
 		},
 	},
 
-	css: ['/assets/less/main.less'],
+	css: ['/assets/css/main.css'],
+
+	postcss: {
+		plugins: {
+			tailwindcss: {},
+			autoprefixer: {},
+		},
+	},
 
 	app: {
 		head: {
@@ -24,15 +31,6 @@ export default defineNuxtConfig({
 		vue: {
 			script: {
 				propsDestructure: true,
-			},
-		},
-
-		css: {
-			preprocessorOptions: {
-				less: {
-					sourceMap: false,
-					additionalData: '', // TODO: add less imports
-				},
 			},
 		},
 
@@ -55,7 +53,7 @@ export default defineNuxtConfig({
 		timing: false,
 	},
 
-	modules: ['nuxt-multi-cache', '@nuxt/test-utils/module'],
+	modules: ['nuxt-multi-cache', '@nuxt/test-utils/module', '@nuxt/ui'],
 
 	runtimeConfig: {
 		api: {

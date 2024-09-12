@@ -99,9 +99,6 @@
 	"[less]": {
 		"editor.formatOnSave": true
 	},
-	"files.associations": {
-		"*.env*": "env"
-	},
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"cSpell.words": [
 		"brotli",
@@ -123,5 +120,20 @@
 	"cssrem.addMark": true,
 	"cssrem.hover": "always",
 	"cssrem.currentLine": "show",
-	"cssrem.remHover": true
+	"cssrem.remHover": true,
+
+	"files.associations": {
+		"*.env*": "env",
+		"*.css": "tailwindcss"
+	},
+	"editor.quickSuggestions": {
+		"strings": true
+	},
+	"tailwindCSS.experimental.classRegex": [
+		"tw`([^`]*)",
+		"tw\\('([^'\\)]*)",
+		"/\\*@tw\\*/ ([^;]*);",
+		"'([^']*)'",
+		"[a-zA-Z]*Class='([^']+)'"
+	]
 }
