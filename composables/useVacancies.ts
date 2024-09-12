@@ -1,7 +1,8 @@
 import { vacanciesService } from '~/services/vacancies';
+import type { Vacancy } from '~/models/vacancies';
 
 export const useVacanciesStore = () => ({
-	vacanciesState: useState<unknown>('vacanciesState', () => []),
+	vacanciesState: useState<Vacancy.Model[]>('vacanciesState', () => []),
 	vacanciesLoaded: useState<boolean>('vacanciesLoaded', () => false),
 	vacanciesPending: useState<boolean>('vacanciesPending', () => true),
 });
@@ -10,7 +11,7 @@ export const useVacancies = () => {
 	const { vacanciesState, vacanciesLoaded, vacanciesPending } = useVacanciesStore();
 
 	/**
-	 * Получаем список вакансий
+	 * Fetch vacancies
 	 */
 	const fetchVacancies = async () => {
 		if (vacanciesLoaded.value) return;
@@ -24,7 +25,7 @@ export const useVacancies = () => {
 	};
 
 	/**
-	 * Обновляем список вакансий
+	 * Refresh vacancies
 	 */
 	const refreshVacancies = async () => {
 		vacanciesLoaded.value = false;

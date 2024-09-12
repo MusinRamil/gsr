@@ -1,4 +1,12 @@
 export namespace Vacancy {
+	export const sortTypes = {
+		DEFAULT: 'default',
+		SALARY_HIGHEST: 'salary_highest',
+		SALARY_LOWEST: 'salary_lowest',
+	} as const;
+
+	export type SortType = (typeof sortTypes)[keyof typeof sortTypes];
+
 	export type Model = {
 		vacancy_id: number;
 		vacplacement_id: number;
