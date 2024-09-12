@@ -1,3 +1,3 @@
 <template lang="pug">
-footer Подвал сайта
+footer
 </template>
