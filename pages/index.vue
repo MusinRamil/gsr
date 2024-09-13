@@ -1,67 +1,71 @@
 <template lang="pug">
-div(class='grid gap-4 sm:grid-cols-2 xl:grid-cols-[repeat(16,_minmax(0,_1fr))]')
-	div(class='xl:col-start-5 xl:col-span-12')
-		h3 Нашли {{ searchVacanciesPagination.total }} {{ $f.pluralize(searchVacanciesPagination.total, ['предложение', 'предложения', 'предложений']) }} для тебя
+div(class='grid gap-8 sm:grid-cols-2 xl:grid-cols-[repeat(16,_minmax(0,_1fr))]')
+	div(class='flex flex-row justify-between items-center xl:col-start-5 xl:col-span-12')
+		div(class='text-xl') Нашли {{ searchVacanciesPagination.total }} {{ $f.pluralize(searchVacanciesPagination.total, ['предложение', 'предложения', 'предложений']) }} для тебя
+		UiSort(
+			v-model='sortModel',
+			:sortOptions='sortOptions',
+			staticClass='w-60',
+			placeholder='Сортировать'
+		)
 	div(class='xl:col-span-4')
-		div Фасеты
+		VacanciesFacets(:facets='searchVacanciesFacets')
 	div(class='xl:col-span-12')
-		div листинг
+		VacanciesListing(:listing='searchVacanciesListing')
+		UiPagination(
+			v-model='paginationModel',
+			:perPage='searchVacanciesPagination.per_page',
+			:total='searchVacanciesPagination.total'
+		)
 </template>
 
-<!-- <div>
-		<div v-if="vacanciesPending">Загрузка...</div>
-		<div v-if="vacanciesLoaded">
-			<input
-				v-model="vacanciesSearchQuery.search"
-				placeholder="Поиск вакансий"
-				@input="searchVacancies"
-			/>
-
-			<select v-model="vacanciesSearchQuery.sort" @change="searchVacancies">
-				<option value="salary_highest">По зарплате (убывание)</option>
-				<option value="salary_lowest">По зарплате (возрастание)</option>
-			</select>
-
-			<ul>
-				<li v-for="vacancy in vacanciesSearchResults" :key="vacancy.vacancy_id">
-					{{ vacancy.proftitle }} - {{ vacancy.salary_volume }}
-				</li>
-			</ul>
-
-			<div>
-				<button
-					@click="vacanciesSearchQuery.page--"
-					:disabled="vacanciesSearchQuery.page === 1"
-				>
-					Назад
-				</button>
-				<button @click="vacanciesSearchQuery.page++">Вперёд</button>
-			</div>
-		</div>
-	</div> -->
-
 <script lang="ts" setup>
-const { searchVacanciesPagination, searchVacanciesListing, searchVacanciesFacets } =
-	await useSearchVacancies();
+import { Vacancy } from '~/models/vacancies';
 
-console.log('searchVacancies', searchVacanciesPagination.value);
+const {
+	getQuerySort,
+	setQuerySort,
+	getQueryPage,
+	setQueryPage,
+	getQueryFilters,
+	setQueryFilters,
+	searchVacanciesPagination,
+	searchVacanciesListing,
+	searchVacanciesFacets,
+} = await useSearchVacancies();
 
-// await searchVacanciesInit();
-// import { defineComponent } from 'vue';
+/**
+ * Sort options and model
+ */
+const mapSortOptionsLabel = (type: Vacancy.SortType) => {
+	const labels = {
+		[Vacancy.sortTypes.DEFAULT]: 'По умолчанию',
+		[Vacancy.sortTypes.SALARY_HIGHEST]: 'По зарплате (убывание)',
+		[Vacancy.sortTypes.SALARY_LOWEST]: 'По зарплате (возрастание)',
+	};
+	return labels[type] || labels[Vacancy.sortTypes.DEFAULT];
+};
 
-// export default defineComponent({
-//   setup() {
-//     const { vacancies, loading, error, searchQuery, searchResults, facets, searchVacancies } = useVacancies();
+const sortOptions = computed(() => {
+	return Object.values(Vacancy.sortTypes).map(value => ({
+		id: value,
+		label: mapSortOptionsLabel(value),
+	}));
+});
 
-//     return {
-//       vacancies,
-//       loading,
-//       error,
-//       searchQuery,
-//       searchResults,
-//       facets,
-//       searchVacancies,
-//     };
-//   },
-// });
+const sortModel = computed({
+	get: () => getQuerySort() || sortOptions.value[0].id,
+	set: (value: string) =>
+		Object.values(Vacancy.sortTypes).includes(value as Vacancy.SortType)
+			? setQuerySort(value)
+			: setQuerySort(sortOptions.value[0].id),
+});
+
+/**
+ * Pagination
+ */
+const paginationModel = computed({
+	get: () => getQueryPage() || 1,
+	set: (value: number) => (value !== 1 ? setQueryPage(value) : setQueryPage(undefined)),
+});
 </script>

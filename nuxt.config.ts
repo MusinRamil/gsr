@@ -27,13 +27,11 @@ export default defineNuxtConfig({
 		},
 	},
 
-	vite: {
-		vue: {
-			script: {
-				propsDestructure: true,
-			},
-		},
+	vue: {
+		propsDestructure: true,
+	},
 
+	vite: {
 		plugins: [],
 
 		resolve: {
