@@ -70,7 +70,6 @@ export const useSearchVacancies = async () => {
 				chosen_filters_on_top: false,
 			},
 		},
-		searchableFields: ['proftitle', 'search_desc'],
 	});
 
 	const searchVacancies = computed(() => {

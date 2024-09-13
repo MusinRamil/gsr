@@ -55,11 +55,11 @@ export default defineNuxtConfig({
 
 	runtimeConfig: {
 		api: {
-			baseURL: process.env.NUXT_API_BASE_URL || '/api',
+			baseURL: process.env.NUXT_API_BASE_URL || 'https://gsr-rabota.ru/api/v2',
 		},
 		public: {
 			api: {
-				baseURL: process.env.NUXT_PUBLIC_API_BASE_URL || '/api',
+				baseURL: process.env.NUXT_PUBLIC_API_BASE_URL || 'https://gsr-rabota.ru/api/v2',
 			},
 		},
 	},
